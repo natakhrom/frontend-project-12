@@ -117,7 +117,7 @@ const SignupPage = () => {
                         type="invalid"
                         tooltip
                       >
-                        <span>{errors.username}</span>
+                        {errors.username}
                       </Form.Control.Feedback>
                     </Form.Group>
 
@@ -141,7 +141,7 @@ const SignupPage = () => {
                         type="invalid"
                         tooltip
                       >
-                        <span>{errors.password}</span>
+                        { errors.password}
                       </Form.Control.Feedback>
                     </Form.Group>
 
@@ -177,7 +177,7 @@ const SignupPage = () => {
                         type="invalid"
                         tooltip
                       >
-                        <span>{errors.confirmPassword}</span>
+                        {errors.confirmPassword}
                       </Form.Control.Feedback>
                     </Form.Group>
 
