@@ -98,13 +98,14 @@ const SignupPage = () => {
 
                     <Form.Group
                       as={Col}
-                      controlId="validationUsername"
+                      controlId="username"
                       className="form-floating mb-3"
                     >
                       <Form.Control
-                        type="text"
+                        placeholder={t('errors.minMax')}
                         name="username"
-                        placeholder="Имя пользователя"
+                        autoComplete="username"
+                        required
                         value={values.username}
                         onChange={(e) => {
                           handleChange(e);
@@ -124,34 +125,38 @@ const SignupPage = () => {
 
                     <Form.Group
                       as={Col}
-                      controlId="validationPassword"
+                      controlId="password"
                       className="form-floating mb-4"
                     >
                       <Form.Control
                         type="password"
                         name="password"
-                        placeholder="Пароль"
+                        placeholder={t('errors.password')}
+                        autoComplete="new-password"
+                        required
                         value={values.password}
                         onChange={handleChange}
                         onBlur={handleBlur}
                         isInvalid={(touched.password && errors.password) || authFailed === true}
                       />
-                      <Form.Label>{t('fields.password')}</Form.Label>
                       <Form.Control.Feedback type="invalid" tooltip>
                         {errors.password}
                       </Form.Control.Feedback>
+                      <Form.Label>{t('fields.password')}</Form.Label>
                     </Form.Group>
 
                     <Form.Group
                       as={Col}
-                      controlId="validationconfirmPassword"
+                      controlId="confirmPassword"
                       className="form-floating mb-4"
                     >
                       <Form.Control
                         type="password"
                         name="confirmPassword"
-                        placeholder="Подтвердите пароль"
+                        placeholder={t('errors.confirmPassword')}
                         value={values.confirmPassword}
+                        autoComplete="new-password"
+                        required
                         onChange={handleChange}
                         onBlur={handleBlur}
                         isInvalid={(
@@ -164,10 +169,10 @@ const SignupPage = () => {
                           </div>
                         )
                         : null}
-                      <Form.Label>{t('fields.confirmPassword')}</Form.Label>
                       <Form.Control.Feedback type="invalid" tooltip>
                         {errors.confirmPassword}
                       </Form.Control.Feedback>
+                      <Form.Label>{t('fields.confirmPassword')}</Form.Label>
                     </Form.Group>
 
                     <Button variant="outline-primary" type="submit" className="w-100">
