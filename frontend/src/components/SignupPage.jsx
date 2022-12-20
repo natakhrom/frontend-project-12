@@ -45,13 +45,13 @@ const SignupPage = () => {
       localStorage.setItem('userId', JSON.stringify(res.data));
       auth.logIn();
     } catch (err) {
+      setAuthFailed(true);
+
       if (err.isAxiosError && err.response.data.statusCode === 409) {
-        setAuthFailed(true);
         inputRef.current.select();
 
         return;
       }
-      inputRef.current.select();
       console.error(err.response.data);
     }
   };
@@ -115,10 +115,16 @@ const SignupPage = () => {
                         }}
                         onBlur={handleBlur}
                         ref={inputRef}
-                        isInvalid={(touched.username && errors.username) || authFailed === true}
+                        isValid={touched.username && !errors.username}
+                        isInvalid={(touched.username && !!errors.username) || authFailed === true}
+                        aria-describedby="usernameError"
                       />
                       <Form.Label>{t('fields.username')}</Form.Label>
-                      <Form.Control.Feedback type="invalid" tooltip>
+                      <Form.Control.Feedback
+                        id="usernameError"
+                        type="invalid"
+                        tooltip
+                      >
                         {errors.username}
                       </Form.Control.Feedback>
                     </Form.Group>
@@ -136,9 +142,15 @@ const SignupPage = () => {
                         value={values.password}
                         onChange={handleChange}
                         onBlur={handleBlur}
-                        isInvalid={(touched.password && errors.password) || authFailed === true}
+                        isValid={touched.password && !errors.password}
+                        isInvalid={(touched.password && !!errors.password) || authFailed === true}
+                        aria-describedby="passwordError"
                       />
-                      <Form.Control.Feedback type="invalid" tooltip>
+                      <Form.Control.Feedback
+                        id="passwordError"
+                        type="invalid"
+                        tooltip
+                      >
                         {errors.password}
                       </Form.Control.Feedback>
                       <Form.Label>{t('fields.password')}</Form.Label>
@@ -157,8 +169,14 @@ const SignupPage = () => {
                         required
                         onChange={handleChange}
                         onBlur={handleBlur}
-                        isInvalid={(
-                          touched.confirmPassword && errors.confirmPassword) || authFailed === true}
+                        isValid={
+                          touched.confirmPassword && !errors.confirmPassword
+                        }
+                        isInvalid={
+                          (touched.confirmPassword && !!errors.confirmPassword)
+                          || authFailed === true
+                        }
+                        aria-describedby="confirmPasswordError"
                       />
                       {authFailed
                         ? (
@@ -168,7 +186,11 @@ const SignupPage = () => {
                         )
                         : null}
                       <Form.Label>{t('fields.confirmPassword')}</Form.Label>
-                      <Form.Control.Feedback type="invalid" tooltip>
+                      <Form.Control.Feedback
+                        id="confirmPasswordError"
+                        type="invalid"
+                        tooltip
+                      >
                         {errors.confirmPassword}
                       </Form.Control.Feedback>
                     </Form.Group>
