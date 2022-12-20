@@ -76,7 +76,10 @@ const LoginPage = () => {
                     onSubmit={handleSubmit}
                   >
                     <h1 className="text-center mb-4">Войти</h1>
-                    <Form.Group className="form-floating mb-3">
+                    <Form.Group
+                      controlId="username"
+                      className="form-floating mb-3"
+                    >
                       <Form.Control
                         type="text"
                         name="username"
@@ -88,15 +91,18 @@ const LoginPage = () => {
                         }}
                         onBlur={handleBlur}
                         value={values.username}
-                        placeholder="Ваш ник"
+                        placeholder={t('fields.nickname')}
                         ref={userRef}
                         isInvalid={authFailed}
                         required
                       />
-                      <Form.Label htmlFor="username">{t('fields.nickname')}</Form.Label>
+                      <Form.Label>{t('fields.nickname')}</Form.Label>
                     </Form.Group>
 
-                    <Form.Group className="form-floating mb-4">
+                    <Form.Group
+                      controlId="password"
+                      className="form-floating mb-4"
+                    >
                       <Form.Control
                         type="password"
                         name="password"
@@ -108,12 +114,12 @@ const LoginPage = () => {
                         }}
                         onBlur={handleBlur}
                         value={values.password}
-                        placeholder="Пароль"
+                        placeholder={t('fields.password')}
                         ref={passwordRef}
                         isInvalid={authFailed}
                         required
                       />
-                      <Form.Label htmlFor="password">{t('fields.password')}</Form.Label>
+                      <Form.Label>{t('fields.password')}</Form.Label>
                       {authFailed
                         ? <div className="invalid-tooltip">{t('errors.faildNameOrPassword')}</div>
                         : null}
