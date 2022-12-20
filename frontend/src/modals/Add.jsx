@@ -44,6 +44,7 @@ const Add = ({ show, onHide }) => {
         onHide={onHide}
         refSubmit={refSubmit}
         refCancel={refCancel}
+        labelName={t('fields.labelAddlName')}
       />
     </Container>
   );

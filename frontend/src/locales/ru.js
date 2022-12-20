@@ -45,7 +45,8 @@ const ru = {
       password: 'Пароль',
       username: 'Имя пользователя',
       confirmPassword: 'Подтвердите пароль',
-      channelName: 'Имя канала',
+      labelAddlName: 'Имя канала',
+      labelRename: 'Управление каналом',
     },
     notify: {
       adding: 'Канал создан',
