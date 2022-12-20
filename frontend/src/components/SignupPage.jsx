@@ -114,16 +114,15 @@ const SignupPage = () => {
                         required
                       />
                       <Form.Label htmlFor="username">{t('fields.username')}</Form.Label>
-                      <Form.Control.Feedback type="invalid" tooltip>
+                      <Form.Control.Feedback type="invalid" tooltip htmlFor="username">
                         {errors.username}
                       </Form.Control.Feedback>
                     </Form.Group>
 
-                    <Form.Group className="form-floating mb-4">
+                    <Form.Group className="form-floating mb-4" controlId="password">
                       <Form.Control
                         type="password"
                         name="password"
-                        id="password"
                         placeholder="Пароль"
                         value={values.password}
                         onChange={handleChange}
@@ -131,7 +130,7 @@ const SignupPage = () => {
                         isInvalid={(touched.password && errors.password) || authFailed === true}
                         required
                       />
-                      <Form.Label htmlFor="password">
+                      <Form.Label>
                         {t('fields.password')}
                       </Form.Label>
                       <Form.Control.Feedback type="invalid" tooltip>
@@ -139,11 +138,10 @@ const SignupPage = () => {
                       </Form.Control.Feedback>
                     </Form.Group>
 
-                    <Form.Group className="form-floating mb-4">
+                    <Form.Group className="form-floating mb-4" controlId="confirmPassword">
                       <Form.Control
                         type="password"
                         name="confirmPassword"
-                        id="confirmPassword"
                         placeholder="Подтвердите пароль"
                         value={values.confirmPassword}
                         onChange={handleChange}
@@ -159,7 +157,7 @@ const SignupPage = () => {
                           </div>
                         )
                         : null}
-                      <Form.Label htmlFor="confirmPassword">{t('fields.confirmPassword')}</Form.Label>
+                      <Form.Label>{t('fields.confirmPassword')}</Form.Label>
                       <Form.Control.Feedback type="invalid" tooltip>
                         {errors.confirmPassword}
                       </Form.Control.Feedback>
