@@ -33,7 +33,6 @@ const SignupPage = () => {
       .min(6, t('errors.password')),
     confirmPassword: yup
       .string()
-      .required(t('errors.required'))
       .oneOf([yup.ref('password')], t('errors.confirmPassword')),
   });
 
@@ -51,7 +50,7 @@ const SignupPage = () => {
 
         return;
       }
-
+      inputRef.current.select();
       console.error(err.response.data);
     }
   };
@@ -110,7 +109,6 @@ const SignupPage = () => {
                         }}
                         onBlur={handleBlur}
                         ref={inputRef}
-                        isValid={touched.username && !errors.username}
                         isInvalid={(touched.username && errors.username) || authFailed === true}
                       />
                       <Form.Label htmlFor="username">{t('fields.username')}</Form.Label>
@@ -127,7 +125,6 @@ const SignupPage = () => {
                         value={values.password}
                         onChange={handleChange}
                         onBlur={handleBlur}
-                        isValid={touched.password && !errors.password}
                         isInvalid={(touched.password && errors.password) || authFailed === true}
                       />
                       <Form.Label htmlFor="password">
@@ -146,9 +143,9 @@ const SignupPage = () => {
                         value={values.confirmPassword}
                         onChange={handleChange}
                         onBlur={handleBlur}
-                        isValid={touched.confirmPassword && !errors.confirmPassword}
                         isInvalid={(
                           touched.confirmPassword && errors.confirmPassword) || authFailed === true}
+                        required
                       />
                       {authFailed
                         ? (

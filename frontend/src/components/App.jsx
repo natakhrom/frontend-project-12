@@ -46,7 +46,7 @@ const PrivateRoute = ({ children }) => {
 };
 
 const rollbarConfig = {
-  accessToken: 'c813bf740b8543aba49e8de83812a3ae',
+  accessToken: 'bfc2e62c12fa46d78f1c2ef6890cc98d',
   environment: 'production',
 };
 
