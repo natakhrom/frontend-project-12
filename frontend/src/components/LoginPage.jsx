@@ -29,6 +29,7 @@ const LoginPage = () => {
 
       localStorage.setItem('userId', JSON.stringify(res.data));
       auth.logIn();
+      navigation('/');
     } catch (err) {
       if (err.isAxiosError && err.response.status === 401) {
         setAuthFailed(true);
@@ -46,12 +47,6 @@ const LoginPage = () => {
       setAuthFailed(false);
     }
   };
-
-  useEffect(() => {
-    if (auth.loggedIn) {
-      navigation('/');
-    }
-  }, [auth.loggedIn, navigation]);
 
   return (
     <div className="container-fluid h-100">

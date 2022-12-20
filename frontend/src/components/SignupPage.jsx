@@ -44,6 +44,7 @@ const SignupPage = () => {
       const res = await axios.post(routes.signupPath(), values);
       localStorage.setItem('userId', JSON.stringify(res.data));
       auth.logIn();
+      navigation('/');
     } catch (err) {
       setAuthFailed(true);
 
@@ -55,12 +56,6 @@ const SignupPage = () => {
       console.error(err.response.data);
     }
   };
-
-  useEffect(() => {
-    if (auth.loggedIn) {
-      navigation('/');
-    }
-  }, [auth.loggedIn, navigation]);
 
   return (
     <div className="container-fluid h-100">
@@ -102,7 +97,7 @@ const SignupPage = () => {
                     >
                       <Form.Control
                         type="text"
-                        placeholder={t('errors.minMax')}
+                        placeholder={t('fields.username')}
                         name="username"
                         required
                         value={values.username}
@@ -122,7 +117,7 @@ const SignupPage = () => {
                         type="invalid"
                         tooltip
                       >
-                        {errors.username}
+                        <span>{errors.username}</span>
                       </Form.Control.Feedback>
                     </Form.Group>
 
@@ -133,7 +128,7 @@ const SignupPage = () => {
                       <Form.Control
                         type="password"
                         name="password"
-                        placeholder={t('errors.password')}
+                        placeholder={t('fields.password')}
                         required
                         value={values.password}
                         onChange={handleChange}
@@ -146,7 +141,7 @@ const SignupPage = () => {
                         type="invalid"
                         tooltip
                       >
-                        {errors.password}
+                        <span>{errors.password}</span>
                       </Form.Control.Feedback>
                     </Form.Group>
 
@@ -157,7 +152,7 @@ const SignupPage = () => {
                       <Form.Control
                         type="password"
                         name="confirmPassword"
-                        placeholder={t('errors.confirmPassword')}
+                        placeholder={t('fields.confirmPassword')}
                         value={values.confirmPassword}
                         required
                         onChange={handleChange}
@@ -182,7 +177,7 @@ const SignupPage = () => {
                         type="invalid"
                         tooltip
                       >
-                        {errors.confirmPassword}
+                        <span>{errors.confirmPassword}</span>
                       </Form.Control.Feedback>
                     </Form.Group>
 
