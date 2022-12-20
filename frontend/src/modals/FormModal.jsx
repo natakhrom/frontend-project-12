@@ -44,7 +44,9 @@ const FormModal = ({
         <Form
           onSubmit={handleSubmit}
         >
-          <Form.Group>
+          <Form.Group
+            controlId="channelName"
+          >
             <Form.Control
               type="text"
               name="channelName"
@@ -53,6 +55,7 @@ const FormModal = ({
               value={values.channelName}
               isInvalid={touched.channelName && errors.channelName}
             />
+            <Form.Label className="visually-hidden">{t('fields.channelName')}</Form.Label>
             <Form.Control.Feedback className="invalid-feedback">
               {errors.channelName}
             </Form.Control.Feedback>
