@@ -110,6 +110,7 @@ const SignupPage = () => {
                         onBlur={handleBlur}
                         ref={inputRef}
                         isInvalid={(touched.username && errors.username) || authFailed === true}
+                        required
                       />
                       <Form.Label htmlFor="username">{t('fields.username')}</Form.Label>
                       <Form.Control.Feedback type="invalid" tooltip>
@@ -126,6 +127,7 @@ const SignupPage = () => {
                         onChange={handleChange}
                         onBlur={handleBlur}
                         isInvalid={(touched.password && errors.password) || authFailed === true}
+                        required
                       />
                       <Form.Label htmlFor="password">
                         {t('fields.password')}
