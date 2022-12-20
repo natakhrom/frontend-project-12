@@ -33,8 +33,8 @@ const SignupPage = () => {
       .min(6, t('errors.password')),
     confirmPassword: yup
       .string()
-      .required(t('errors.required'))
-      .oneOf([yup.ref('password')], t('errors.confirmPassword')),
+      .required(t('errors.confirmPassword'))
+      .oneOf([yup.ref('password'), null], t('errors.confirmPassword')),
   });
 
   const onSubmit = async (values) => {
@@ -102,9 +102,9 @@ const SignupPage = () => {
                       className="form-floating mb-3"
                     >
                       <Form.Control
-                        placeholder={t('errors.minMax')}
+                        type="text"
+                        placeholder={t('fields.username')}
                         name="username"
-                        autoComplete="username"
                         required
                         value={values.username}
                         onChange={(e) => {
@@ -131,8 +131,7 @@ const SignupPage = () => {
                       <Form.Control
                         type="password"
                         name="password"
-                        placeholder={t('errors.password')}
-                        autoComplete="new-password"
+                        placeholder={t('fields.password')}
                         required
                         value={values.password}
                         onChange={handleChange}
@@ -153,9 +152,8 @@ const SignupPage = () => {
                       <Form.Control
                         type="password"
                         name="confirmPassword"
-                        placeholder={t('errors.confirmPassword')}
+                        placeholder={t('fields.confirmPassword')}
                         value={values.confirmPassword}
-                        autoComplete="new-password"
                         required
                         onChange={handleChange}
                         onBlur={handleBlur}
@@ -169,10 +167,10 @@ const SignupPage = () => {
                           </div>
                         )
                         : null}
+                      <Form.Label>{t('fields.confirmPassword')}</Form.Label>
                       <Form.Control.Feedback type="invalid" tooltip>
                         {errors.confirmPassword}
                       </Form.Control.Feedback>
-                      <Form.Label>{t('fields.confirmPassword')}</Form.Label>
                     </Form.Group>
 
                     <Button variant="outline-primary" type="submit" className="w-100">
