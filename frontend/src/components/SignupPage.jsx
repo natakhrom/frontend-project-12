@@ -99,6 +99,7 @@ const SignupPage = () => {
                       <Form.Control
                         type="text"
                         name="username"
+                        id="username"
                         placeholder="Имя пользователя"
                         value={values.username}
                         onChange={(e) => {
@@ -122,6 +123,7 @@ const SignupPage = () => {
                       <Form.Control
                         type="password"
                         name="password"
+                        id="password"
                         placeholder="Пароль"
                         value={values.password}
                         onChange={handleChange}
@@ -141,6 +143,7 @@ const SignupPage = () => {
                       <Form.Control
                         type="password"
                         name="confirmPassword"
+                        id="confirmPassword"
                         placeholder="Подтвердите пароль"
                         value={values.confirmPassword}
                         onChange={handleChange}
