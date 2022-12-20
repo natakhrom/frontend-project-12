@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Formik } from 'formik';
 import * as yup from 'yup';
-import { Form, Button } from 'react-bootstrap';
+import { Form, Col, Button } from 'react-bootstrap';
 import axios from 'axios';
 import { useTranslation } from 'react-i18next';
 
@@ -33,6 +33,7 @@ const SignupPage = () => {
       .min(6, t('errors.password')),
     confirmPassword: yup
       .string()
+      .required(t('errors.required'))
       .oneOf([yup.ref('password')], t('errors.confirmPassword')),
   });
 
@@ -95,11 +96,14 @@ const SignupPage = () => {
                       {t('titles.registration')}
                     </h1>
 
-                    <Form.Group className="form-floating mb-3">
+                    <Form.Group
+                      as={Col}
+                      controlId="validationUsername"
+                      className="form-floating mb-3"
+                    >
                       <Form.Control
                         type="text"
                         name="username"
-                        id="username"
                         placeholder="Имя пользователя"
                         value={values.username}
                         onChange={(e) => {
@@ -111,15 +115,18 @@ const SignupPage = () => {
                         onBlur={handleBlur}
                         ref={inputRef}
                         isInvalid={(touched.username && errors.username) || authFailed === true}
-                        required
                       />
-                      <Form.Label htmlFor="username">{t('fields.username')}</Form.Label>
-                      <Form.Control.Feedback type="invalid" tooltip htmlFor="username">
+                      <Form.Label>{t('fields.username')}</Form.Label>
+                      <Form.Control.Feedback type="invalid" tooltip>
                         {errors.username}
                       </Form.Control.Feedback>
                     </Form.Group>
 
-                    <Form.Group className="form-floating mb-4" controlId="password">
+                    <Form.Group
+                      as={Col}
+                      controlId="validationPassword"
+                      className="form-floating mb-4"
+                    >
                       <Form.Control
                         type="password"
                         name="password"
@@ -128,17 +135,18 @@ const SignupPage = () => {
                         onChange={handleChange}
                         onBlur={handleBlur}
                         isInvalid={(touched.password && errors.password) || authFailed === true}
-                        required
                       />
-                      <Form.Label>
-                        {t('fields.password')}
-                      </Form.Label>
+                      <Form.Label>{t('fields.password')}</Form.Label>
                       <Form.Control.Feedback type="invalid" tooltip>
                         {errors.password}
                       </Form.Control.Feedback>
                     </Form.Group>
 
-                    <Form.Group className="form-floating mb-4" controlId="confirmPassword">
+                    <Form.Group
+                      as={Col}
+                      controlId="validationconfirmPassword"
+                      className="form-floating mb-4"
+                    >
                       <Form.Control
                         type="password"
                         name="confirmPassword"
@@ -148,7 +156,6 @@ const SignupPage = () => {
                         onBlur={handleBlur}
                         isInvalid={(
                           touched.confirmPassword && errors.confirmPassword) || authFailed === true}
-                        required
                       />
                       {authFailed
                         ? (
