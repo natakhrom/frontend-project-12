@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Formik } from 'formik';
 import * as yup from 'yup';
-import { Form, Col, Button } from 'react-bootstrap';
+import { Form, Button } from 'react-bootstrap';
 import axios from 'axios';
 import { useTranslation } from 'react-i18next';
 
@@ -97,13 +97,12 @@ const SignupPage = () => {
                     </h1>
 
                     <Form.Group
-                      as={Col}
                       controlId="username"
                       className="form-floating mb-3"
                     >
                       <Form.Control
                         type="text"
-                        placeholder={t('fields.username')}
+                        placeholder={t('errors.minMax')}
                         name="username"
                         required
                         value={values.username}
@@ -117,11 +116,9 @@ const SignupPage = () => {
                         ref={inputRef}
                         isValid={touched.username && !errors.username}
                         isInvalid={(touched.username && !!errors.username) || authFailed === true}
-                        aria-describedby="usernameError"
                       />
                       <Form.Label>{t('fields.username')}</Form.Label>
                       <Form.Control.Feedback
-                        id="usernameError"
                         type="invalid"
                         tooltip
                       >
@@ -130,41 +127,37 @@ const SignupPage = () => {
                     </Form.Group>
 
                     <Form.Group
-                      as={Col}
                       controlId="password"
                       className="form-floating mb-4"
                     >
                       <Form.Control
                         type="password"
                         name="password"
-                        placeholder={t('fields.password')}
+                        placeholder={t('errors.password')}
                         required
                         value={values.password}
                         onChange={handleChange}
                         onBlur={handleBlur}
                         isValid={touched.password && !errors.password}
                         isInvalid={(touched.password && !!errors.password) || authFailed === true}
-                        aria-describedby="passwordError"
                       />
+                      <Form.Label>{t('fields.password')}</Form.Label>
                       <Form.Control.Feedback
-                        id="passwordError"
                         type="invalid"
                         tooltip
                       >
                         {errors.password}
                       </Form.Control.Feedback>
-                      <Form.Label>{t('fields.password')}</Form.Label>
                     </Form.Group>
 
                     <Form.Group
-                      as={Col}
                       controlId="confirmPassword"
                       className="form-floating mb-4"
                     >
                       <Form.Control
                         type="password"
                         name="confirmPassword"
-                        placeholder={t('fields.confirmPassword')}
+                        placeholder={t('errors.confirmPassword')}
                         value={values.confirmPassword}
                         required
                         onChange={handleChange}
@@ -176,7 +169,6 @@ const SignupPage = () => {
                           (touched.confirmPassword && !!errors.confirmPassword)
                           || authFailed === true
                         }
-                        aria-describedby="confirmPasswordError"
                       />
                       {authFailed
                         ? (
@@ -187,7 +179,6 @@ const SignupPage = () => {
                         : null}
                       <Form.Label>{t('fields.confirmPassword')}</Form.Label>
                       <Form.Control.Feedback
-                        id="confirmPasswordError"
                         type="invalid"
                         tooltip
                       >
