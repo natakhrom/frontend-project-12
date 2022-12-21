@@ -28,7 +28,9 @@ const Channel = ({
               {name}
             </Button>
 
-            <Dropdown.Toggle split variant={type} />
+            <Dropdown.Toggle split variant={type}>
+              <span className="visually-hidden">{t('fields.controlChannel')}</span>
+            </Dropdown.Toggle>
 
             <Dropdown.Menu>
               <Dropdown.Item

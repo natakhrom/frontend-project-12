@@ -43,7 +43,6 @@ const Rename = ({ show, onHide }) => {
         onHide={onHide}
         refSubmit={refSubmit}
         refCancel={refCancel}
-        labelName={t('fields.labelRename')}
       />
     </Container>
   );

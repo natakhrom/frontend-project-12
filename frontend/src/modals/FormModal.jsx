@@ -10,7 +10,6 @@ const FormModal = ({
   onHide,
   refSubmit,
   refCancel,
-  labelName,
 }) => {
   const { t } = useTranslation();
   const inputRef = useRef();
@@ -56,7 +55,7 @@ const FormModal = ({
               value={values.channelName}
               isInvalid={touched.channelName && errors.channelName}
             />
-            <Form.Label className="visually-hidden">{labelName}</Form.Label>
+            <Form.Label className="visually-hidden">{t('fields.channelName')}</Form.Label>
             <Form.Control.Feedback className="invalid-feedback">
               {errors.channelName}
             </Form.Control.Feedback>
