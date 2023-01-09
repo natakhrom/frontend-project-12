@@ -1,78 +1,59 @@
-import React, { useState } from 'react';
+import React from 'react';
 import {
-  BrowserRouter,
-  Route,
-  Routes,
-  Navigate,
-  useLocation,
+  createBrowserRouter,
+  RouterProvider,
 } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { Provider, ErrorBoundary } from '@rollbar/react';
 
-import AuthContext from '../context/authContext';
-import Chats from './Chats';
-import PageNotFound from './PageNotFound';
-import LoginPage from './LoginPage';
-import Header from './Header';
-import SignupPage from './SignupPage';
-
-const AuthProvider = ({ children }) => {
-  const [loggedIn, setLoggedIn] = useState(false);
-
-  const logIn = () => setLoggedIn(true);
-  const logOut = () => {
-    localStorage.removeItem('userId');
-    setLoggedIn(false);
-  };
-
-  return (
-    // eslint-disable-next-line react/jsx-no-constructed-context-values
-    <AuthContext.Provider value={{ loggedIn, logIn, logOut }}>
-      {children}
-    </AuthContext.Provider>
-  );
-};
-
-const PrivateRoute = ({ children }) => {
-  const token = localStorage.getItem('userId');
-  const location = useLocation();
-
-  return (
-    token
-      ? children
-      : <Navigate to="/login" state={{ from: location }} />
-  );
-};
+import { AuthProvider } from './common/AuthProvider';
+import { SocketProvider } from '../socket/socket';
+import Redirect from '../routes/Redirect';
+import Chats from './main/Chats';
+import PageNotFound from './errorPage/PageNotFound';
+import LoginPage from './login/LoginPage';
+import Header from './common/Header';
+import SignupPage from './signup/SignupPage';
 
 const rollbarConfig = {
-  accessToken: 'bfc2e62c12fa46d78f1c2ef6890cc98d',
+  accessToken: process.env.REACT_APP_SECRET_KEY_ROLLBAR,
   environment: 'production',
 };
+
+const router = createBrowserRouter([
+  {
+    path: '/',
+    element: (
+      <Redirect>
+        <Chats />
+        <ToastContainer />
+      </Redirect>),
+  },
+  {
+    path: '/login',
+    element: <Redirect><LoginPage /></Redirect>,
+  },
+  {
+    path: '/signup',
+    element: <Redirect><SignupPage /></Redirect>,
+  },
+  {
+    path: '*',
+    element: <PageNotFound />,
+  },
+]);
 
 const App = () => (
   <Provider config={rollbarConfig}>
     <ErrorBoundary>
       <AuthProvider>
-        <BrowserRouter>
+        <SocketProvider>
           <div className="d-flex flex-column h-100">
             <Header />
-            <Routes>
-              <Route
-                path="/"
-                element={(
-                  <PrivateRoute>
-                    <Chats />
-                    <ToastContainer />
-                  </PrivateRoute>
-                )}
-              />
-              <Route path="/login" element={<LoginPage />} />
-              <Route path="/signup" element={<SignupPage />} />
-              <Route path="*" element={<PageNotFound />} />
-            </Routes>
+            <RouterProvider router={router} />
           </div>
-        </BrowserRouter>
+        </SocketProvider>
       </AuthProvider>
     </ErrorBoundary>
   </Provider>
