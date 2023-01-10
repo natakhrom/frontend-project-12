@@ -3,6 +3,7 @@ import {
   createContext,
   useContext,
   useMemo,
+  useCallback,
 } from 'react';
 
 import store from '../slices/index';
@@ -21,31 +22,31 @@ export const SocketProvider = ({ children }) => {
   socket.on('renameChannel', (payload) => store.dispatch(updateChannel(payload)));
   socket.on('newMessage', (payload) => store.dispatch(addMessage(payload)));
 
-  const add = (nameChannel, username) => socket.emit(
+  const add = useCallback((nameChannel, username) => socket.emit(
     'newChannel',
     {
       name: nameChannel,
       username,
     },
     (response) => console.log(response.status),
-  );
+  ), [socket]);
 
-  const remove = (channel) => socket.emit(
+  const remove = useCallback((channel) => socket.emit(
     'removeChannel',
     channel,
     (response) => console.log(response.status),
-  );
+  ), [socket]);
 
-  const rename = (id, name) => socket.emit(
+  const rename = useCallback((id, name) => socket.emit(
     'renameChannel',
     {
       id,
       name,
     },
     (response) => console.log(response.status),
-  );
+  ), [socket]);
 
-  const setMessage = (message, channelId, username) => socket.emit(
+  const setMessage = useCallback((message, channelId, username) => socket.emit(
     'newMessage',
     {
       body: message,
@@ -53,11 +54,11 @@ export const SocketProvider = ({ children }) => {
       username,
     },
     (response) => console.log(response.status),
-  );
+  ), [socket]);
 
   const context = useMemo(() => ({
     add, remove, rename, setMessage,
-  }), []);
+  }), [add, remove, rename, setMessage]);
 
   return (
     <SocketContext.Provider value={context}>
