@@ -56,6 +56,9 @@ const channelsSlice = createSlice({
     setChangeableChannel: (state, { payload }) => {
       state.changeableChannel = payload;
     },
+    clearError: (state) => {
+      state.error = null;
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -96,6 +99,7 @@ export const {
   updateChannel,
   changeCurrentChannel,
   setChangeableChannel,
+  clearError,
 } = channelsSlice.actions;
 export const selectors = channelsAdapter.getSelectors((state) => state.channels);
 export default channelsSlice.reducer;
