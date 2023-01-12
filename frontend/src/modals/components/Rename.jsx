@@ -7,7 +7,7 @@ import * as yup from 'yup';
 import { useSelector } from 'react-redux';
 
 import { useSocket } from '../../socket/socket';
-import { selectCurrentChannel } from '../../slices/components/channelsSlice';
+import { selectChangeableChannel } from '../../slices/components/channelsSlice';
 
 const Rename = ({ onHide }) => {
   const { t } = useTranslation();
@@ -15,9 +15,8 @@ const Rename = ({ onHide }) => {
   const inputRef = useRef();
   const refSubmit = useRef();
   const refCancel = useRef();
-  const socket = useSocket();
-  const { rename } = socket;
-  const currentChannel = useSelector(selectCurrentChannel);
+  const { rename } = useSocket();
+  const changeableChannel = useSelector(selectChangeableChannel);
 
   useEffect(() => {
     inputRef.current.focus();
@@ -26,27 +25,27 @@ const Rename = ({ onHide }) => {
   const schema = yup.object().shape({
     channelName: yup
       .string()
-      .required(t('errors.required'))
-      .min(3, t('errors.minMax'))
-      .max(20, t('errors.minMax')),
+      .required('errors.required')
+      .min(3, 'errors.minMax')
+      .max(20, 'errors.minMax'),
   });
 
-  const onSubmit = (values) => {
+  const onSubmit = (values, reject) => {
     try {
-      rename(currentChannel.id, values.channelName);
+      rename(changeableChannel.id, values.channelName);
       refSubmit.current.setAttribute('disabled', true);
       refCancel.current.setAttribute('disabled', true);
       onHide();
       notify();
     } catch (err) {
-      console.log(err.response.data);
+      reject(err.response.data);
     }
   };
 
   return (
     <Formik
       initialValues={{
-        channelName: currentChannel.name,
+        channelName: changeableChannel.name,
       }}
       validationSchema={schema}
       onSubmit={onSubmit}
@@ -74,15 +73,26 @@ const Rename = ({ onHide }) => {
             />
             <Form.Label className="visually-hidden">{t('fields.channelName')}</Form.Label>
             <Form.Control.Feedback className="invalid-feedback">
-              {errors.channelName}
+              {t(errors.channelName)}
             </Form.Control.Feedback>
           </Form.Group>
 
           <Modal.Footer className="border-0 p-0">
-            <Button type="button" variant="secondary" className="mt-2" onClick={console.log('click')} ref={refCancel}>
+            <Button
+              type="button"
+              variant="secondary"
+              className="mt-2"
+              ref={refCancel}
+              onClick={onHide}
+            >
               {t('buttons.cancel')}
             </Button>
-            <Button type="submit" variant="primary" className="mt-2 me-0" ref={refSubmit}>
+            <Button
+              type="submit"
+              variant="primary"
+              className="mt-2 me-0"
+              ref={refSubmit}
+            >
               {t('buttons.send')}
             </Button>
           </Modal.Footer>

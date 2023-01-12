@@ -14,8 +14,7 @@ const Add = ({ onHide }) => {
   const inputRef = useRef();
   const refSubmit = useRef();
   const refCancel = useRef();
-  const socket = useSocket();
-  const { add } = socket;
+  const { add } = useSocket();
   const auth = useAuth();
   const { user } = auth.loggedIn;
   const { username } = user;
@@ -28,12 +27,12 @@ const Add = ({ onHide }) => {
   const schema = yup.object().shape({
     channelName: yup
       .string()
-      .required(t('errors.required'))
-      .min(3, t('errors.minMax'))
-      .max(20, t('errors.minMax')),
+      .required('errors.required')
+      .min(3, 'errors.minMax')
+      .max(20, 'errors.minMax'),
   });
 
-  const onSubmit = (values) => {
+  const onSubmit = (values, reject) => {
     try {
       add(values.channelName, username);
       refSubmit.current.setAttribute('disabled', true);
@@ -41,7 +40,7 @@ const Add = ({ onHide }) => {
       onHide();
       notify();
     } catch (err) {
-      console.log(err.response.data);
+      reject(err.response.data);
     }
   };
 
@@ -76,7 +75,7 @@ const Add = ({ onHide }) => {
             />
             <Form.Label className="visually-hidden">{t('fields.channelName')}</Form.Label>
             <Form.Control.Feedback className="invalid-feedback">
-              {errors.channelName}
+              {t(errors.channelName)}
             </Form.Control.Feedback>
           </Form.Group>
 

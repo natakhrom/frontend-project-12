@@ -30,6 +30,7 @@ const ru = {
       confirmPassword: 'Пароли должны совпадать',
       nameExist: 'Такой пользователь уже существует',
       faildNameOrPassword: 'Неверные имя пользователя или пароль',
+      fetchError: ' Что-то пошло не так...',
     },
     countMessages: {
       key_one: '{{count}} сообщение',

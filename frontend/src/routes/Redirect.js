@@ -4,15 +4,14 @@ import { useAuth } from '../components/common/AuthProvider';
 
 const Redirect = ({ children }) => {
   const auth = useAuth();
-  const { state } = auth.loggedIn;
-  console.log(state);
+  const { user } = auth.loggedIn;
   const location = useLocation();
   const { pathname } = location;
 
-  if (state && pathname !== '/') {
+  if (user && pathname !== '/') {
     return <Navigate to="/" />;
   }
-  if (!state && pathname === '/') {
+  if (!user && pathname === '/') {
     return <Navigate to="/login" />;
   }
   return children;

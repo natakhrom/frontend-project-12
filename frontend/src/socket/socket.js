@@ -28,13 +28,11 @@ export const SocketProvider = ({ children }) => {
       name: nameChannel,
       username,
     },
-    (response) => console.log(response.status),
   ), [socket]);
 
   const remove = useCallback((channel) => socket.emit(
     'removeChannel',
     channel,
-    (response) => console.log(response.status),
   ), [socket]);
 
   const rename = useCallback((id, name) => socket.emit(
@@ -43,7 +41,6 @@ export const SocketProvider = ({ children }) => {
       id,
       name,
     },
-    (response) => console.log(response.status),
   ), [socket]);
 
   const setMessage = useCallback((message, channelId, username) => socket.emit(
@@ -53,7 +50,6 @@ export const SocketProvider = ({ children }) => {
       channelId,
       username,
     },
-    (response) => console.log(response.status),
   ), [socket]);
 
   const context = useMemo(() => ({

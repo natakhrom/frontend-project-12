@@ -1,3 +1,4 @@
+import { useRef, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 
 import Message from './Message';
@@ -7,9 +8,16 @@ import {
 
 const Messages = () => {
   const messages = useSelector(selectCurrentMessages);
+  const messagesRef = useRef();
+
+  useEffect(() => {
+    if (messages.length) {
+      messagesRef.current.scrollTop = messagesRef.current.scrollHeight;
+    }
+  }, [messagesRef, messages]);
 
   return (
-    <div id="messages-box" className="chat-messages overflow-auto px-5">
+    <div id="messages-box" className="chat-messages overflow-auto px-5" ref={messagesRef}>
       {messages
         .map((m) => (
           <Message

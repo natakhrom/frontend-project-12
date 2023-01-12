@@ -28,6 +28,9 @@ const ChatMessageForm = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    if (input.current.value === '') {
+      return;
+    }
     const formData = new FormData(e.target);
     const messageWithoutCens = formData.get('body');
     const message = filter.clean(messageWithoutCens);

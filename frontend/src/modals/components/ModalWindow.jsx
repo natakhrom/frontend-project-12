@@ -1,9 +1,9 @@
 import { Modal } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 
-import Add from './components/Add.jsx';
-import Remove from './components/Remove.jsx';
-import Rename from './components/Rename.jsx';
+import Add from './Add.jsx';
+import Remove from './Remove.jsx';
+import Rename from './Rename.jsx';
 
 const ModalWindow = ({
   show,

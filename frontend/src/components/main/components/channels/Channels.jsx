@@ -2,9 +2,9 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 
 import Channel from './component/Channel';
-import { selectors, changeCurrentChannel } from '../../../../slices/components/channelsSlice';
+import { selectors, changeCurrentChannel, setChangeableChannel } from '../../../../slices/components/channelsSlice';
 import { selectIsOpen, openModal, closeModal } from '../../../../slices/components/modalSlice';
-import ModalWindow from '../../../../modals/ModalWindow';
+import ModalWindow from '../../../../modals/components/ModalWindow';
 
 const Channels = () => {
   const channels = useSelector(selectors.selectAll);
@@ -35,11 +35,18 @@ const Channels = () => {
         {channels.map((ch) => (
           <Channel
             key={ch.id}
+            id={ch.id}
             name={ch.name}
             changeChannel={() => changeChannel(ch.id)}
             removable={ch.removable}
-            showModalRename={() => dispatch(openModal('rename'))}
-            showModalRemove={() => dispatch(openModal('remove'))}
+            showModalRename={() => {
+              dispatch(openModal('rename'));
+              dispatch(setChangeableChannel(ch));
+            }}
+            showModalRemove={() => {
+              dispatch(openModal('remove'));
+              dispatch(setChangeableChannel(ch));
+            }}
           />
         ))}
       </ul>

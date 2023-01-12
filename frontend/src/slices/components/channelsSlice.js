@@ -27,7 +27,8 @@ const channelsAdapter = createEntityAdapter();
 
 const initialState = channelsAdapter.getInitialState({
   currentChannelId: 1,
-  loadingStatus: true,
+  changeableChannel: null,
+  loadingStatus: 'idle',
   error: null,
 });
 
@@ -43,24 +44,29 @@ const channelsSlice = createSlice({
       channelsAdapter.addOne(state, payload);
     },
     removeChannel: (state, { payload }) => {
-      state.currentChannelId = 1;
+      if (state.currentChannelId === payload) {
+        state.currentChannelId = 1;
+      }
       channelsAdapter.removeOne(state, payload);
     },
     updateChannel: channelsAdapter.upsertOne,
-    changeCurrentChannel: (state, action) => {
-      state.currentChannelId = action.payload;
+    changeCurrentChannel: (state, { payload }) => {
+      state.currentChannelId = payload;
+    },
+    setChangeableChannel: (state, { payload }) => {
+      state.changeableChannel = payload;
     },
   },
   extraReducers: (builder) => {
     builder
       .addCase(fetchData.pending, (state) => {
-        state.loadingStatus = true;
+        state.loadingStatus = 'loading';
       })
       .addCase(fetchData.fulfilled, (state, action) => {
         const { channels, currentChannelId } = action.payload;
         channelsAdapter.addMany(state, channels);
         state.currentChannelId = currentChannelId;
-        state.loadingStatus = false;
+        state.loadingStatus = 'loaded';
       })
       .addCase(fetchData.rejected, (state, action) => {
         state.loadingStatus = 'failed';
@@ -72,6 +78,8 @@ const channelsSlice = createSlice({
 const selectChannels = (state) => state.channels.ids;
 const selectCurrentChannelId = (state) => state.channels.currentChannelId;
 export const selectLoadingStatus = (state) => state.channels.loadingStatus;
+export const selectChangeableChannel = (state) => state.channels.changeableChannel;
+export const selectError = (state) => state.channels.error;
 
 export const selectCurrentChannel = createSelector(
   selectChannels,
@@ -87,6 +95,7 @@ export const {
   removeChannel,
   updateChannel,
   changeCurrentChannel,
+  setChangeableChannel,
 } = channelsSlice.actions;
 export const selectors = channelsAdapter.getSelectors((state) => state.channels);
 export default channelsSlice.reducer;

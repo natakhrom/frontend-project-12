@@ -24,20 +24,20 @@ const SignupPage = () => {
   const schema = yup.object().shape({
     username: yup
       .string()
-      .required(t('errors.required'))
-      .min(3, t('errors.minMax'))
-      .max(20, t('errors.minMax')),
+      .required('errors.required')
+      .min(3, 'errors.minMax')
+      .max(20, 'errors.minMax'),
     password: yup
       .string()
-      .required(t('errors.required'))
-      .min(6, t('errors.password')),
+      .required('errors.required')
+      .min(6, 'errors.password'),
     confirmPassword: yup
       .string()
-      .required(t('errors.confirmPassword'))
-      .oneOf([yup.ref('password'), null], t('errors.confirmPassword')),
+      .required('errors.confirmPassword')
+      .oneOf([yup.ref('password'), null], 'errors.confirmPassword'),
   });
 
-  const onSubmit = async (values) => {
+  const onSubmit = async (values, reject) => {
     setAuthFailed(false);
 
     try {
@@ -52,7 +52,7 @@ const SignupPage = () => {
 
         return;
       }
-      console.error(err.response.data);
+      reject(err.response.data);
     }
   };
 
@@ -116,7 +116,7 @@ const SignupPage = () => {
                         type="invalid"
                         tooltip
                       >
-                        {errors.username}
+                        {t(errors.username)}
                       </Form.Control.Feedback>
                     </Form.Group>
 
@@ -140,7 +140,7 @@ const SignupPage = () => {
                         type="invalid"
                         tooltip
                       >
-                        { errors.password}
+                        {t(errors.password)}
                       </Form.Control.Feedback>
                     </Form.Group>
 
@@ -176,7 +176,7 @@ const SignupPage = () => {
                         type="invalid"
                         tooltip
                       >
-                        {errors.confirmPassword}
+                        {t(errors.confirmPassword)}
                       </Form.Control.Feedback>
                     </Form.Group>
 

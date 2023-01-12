@@ -22,7 +22,7 @@ const LoginPage = () => {
     userRef.current.focus();
   }, []);
 
-  const onSubmit = async (values) => {
+  const onSubmit = async (values, reject) => {
     setAuthFailed(false);
 
     try {
@@ -36,7 +36,7 @@ const LoginPage = () => {
 
         return;
       }
-      console.error(err.response.data);
+      reject(err.response.data);
     }
   };
 

@@ -24,8 +24,8 @@ const Channel = ({
     <li className="nav-item w-100">
       {removable
         ? (
-          <Dropdown as={ButtonGroup} onClick={changeChannel} className="w-100">
-            <Button variant={type} className={classBtn}>
+          <Dropdown as={ButtonGroup} className="w-100">
+            <Button variant={type} className={classBtn} onClick={changeChannel}>
               <span className="me-1">#</span>
               {name}
             </Button>

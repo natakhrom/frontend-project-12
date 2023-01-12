@@ -5,11 +5,11 @@ import { useAuth } from '../../common/AuthProvider';
 
 const AuthButton = () => {
   const auth = useAuth();
-  const { state } = auth.loggedIn;
+  const { user } = auth.loggedIn;
   const { t } = useTranslation();
 
   return (
-    state
+    user
       ? <a href="/login"><Button onClick={auth.logOut}>{t('buttons.logOut')}</Button></a>
       : null
   );
