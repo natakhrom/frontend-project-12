@@ -9,4 +9,4 @@
 Проект - упрощенный аналог Slack-чата.
 
 #### Ссылка на проект
-[![YourChat](https://frontend-project-12-production-8eeb.up.railway.app/)]
+[YourChat](https://frontend-project-12-production-8eeb.up.railway.app/)
