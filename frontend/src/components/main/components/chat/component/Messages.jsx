@@ -1,20 +1,41 @@
-import { useRef, useEffect } from 'react';
+import { useRef, useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 
 import Message from './Message';
 import {
   selectCurrentMessages,
+  lastCurrentMessage,
 } from '../../../../../slices/components/messagesSlice';
+import { useAuth } from '../../../../common/AuthProvider';
 
 const Messages = () => {
   const messages = useSelector(selectCurrentMessages);
   const messagesRef = useRef();
+  const [autoScrollDown, setAutoScrollDown] = useState(true);
+  const [lastMessage] = useSelector(lastCurrentMessage);
+  const auth = useAuth();
+  const { user } = auth.loggedIn;
 
   useEffect(() => {
-    if (messages.length) {
-      messagesRef.current.scrollTop = messagesRef.current.scrollHeight;
+    if (autoScrollDown) {
+      messagesRef.current.scrollTo({
+        top: messagesRef.current.scrollHeight,
+        behavior: 'smooth',
+      });
     }
-  }, [messagesRef, messages]);
+  });
+
+  useEffect(() => {
+    if (lastMessage && lastMessage.username === user.username) {
+      setAutoScrollDown(true);
+    }
+  }, [lastMessage, user]);
+
+  window.onwheel = (e) => {
+    if (e.isTrusted) {
+      setAutoScrollDown(false);
+    }
+  };
 
   return (
     <div id="messages-box" className="chat-messages overflow-auto px-5" ref={messagesRef}>

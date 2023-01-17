@@ -12,8 +12,7 @@ import routes from '../../routes/routes';
 
 export const fetchData = createAsyncThunk(
   'fetchData',
-  async () => {
-    const { token } = JSON.parse(localStorage.getItem('userId'));
+  async (token) => {
     const { data } = await axios.get(routes.chatsPath(), {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -24,9 +23,10 @@ export const fetchData = createAsyncThunk(
 );
 
 const channelsAdapter = createEntityAdapter();
+const defaultId = 1;
 
 const initialState = channelsAdapter.getInitialState({
-  currentChannelId: 1,
+  currentChannelId: defaultId,
   changeableChannel: null,
   loadingStatus: 'idle',
   error: null,
@@ -37,15 +37,16 @@ const channelsSlice = createSlice({
   initialState,
   reducers: {
     addChannel: (state, { payload }) => {
+      const isActiveWindow = !document.hidden;
       const { username } = JSON.parse(localStorage.getItem('userId'));
-      if (username === payload.username) {
+      if (isActiveWindow && username === payload.username) {
         state.currentChannelId = payload.id;
       }
       channelsAdapter.addOne(state, payload);
     },
     removeChannel: (state, { payload }) => {
       if (state.currentChannelId === payload) {
-        state.currentChannelId = 1;
+        state.currentChannelId = defaultId;
       }
       channelsAdapter.removeOne(state, payload);
     },

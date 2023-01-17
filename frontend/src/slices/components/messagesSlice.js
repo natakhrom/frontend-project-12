@@ -40,6 +40,11 @@ export const selectCurrentMessages = createSelector(
     .map((item) => entities[item]),
 );
 
+export const lastCurrentMessage = createSelector(
+  selectCurrentMessages,
+  (items) => items.slice(-1),
+);
+
 export const { addMessage } = messagesSlice.actions;
 export const selectors = messagesAdapter.getSelectors((state) => state.messages);
 export default messagesSlice.reducer;

@@ -17,16 +17,19 @@ const Chats = () => {
   const loadingStatus = useSelector(selectLoadingStatus);
   const error = useSelector(selectError);
   const auth = useAuth();
-  const { logOut } = auth;
+  const { logOut, loggedIn } = auth;
+  const { token } = loggedIn.user;
 
   useEffect(() => {
-    dispatch(fetchData());
+    dispatch(fetchData(token));
     return () => dispatch(clearError());
-  }, [dispatch]);
+  }, [dispatch, token]);
 
   useEffect(() => {
     if (error) {
-      logOut();
+      if (error.code === 'ERR_BAD_REQUEST') {
+        logOut();
+      }
     }
   }, [error, logOut]);
 

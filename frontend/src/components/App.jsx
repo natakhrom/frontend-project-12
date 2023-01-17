@@ -6,6 +6,7 @@ import {
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { Provider, ErrorBoundary } from '@rollbar/react';
+import { io } from 'socket.io-client';
 
 import { AuthProvider } from './common/AuthProvider';
 import { SocketProvider } from '../socket/socket';
@@ -44,11 +45,13 @@ const router = createBrowserRouter([
   },
 ]);
 
+const socket = io();
+
 const App = () => (
   <Provider config={rollbarConfig}>
     <ErrorBoundary>
       <AuthProvider>
-        <SocketProvider>
+        <SocketProvider socket={socket}>
           <div className="d-flex flex-column h-100">
             <Header />
             <RouterProvider router={router} />

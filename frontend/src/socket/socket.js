@@ -1,4 +1,3 @@
-import { io } from 'socket.io-client';
 import {
   createContext,
   useContext,
@@ -14,9 +13,7 @@ const SocketContext = createContext({});
 
 export const useSocket = () => useContext(SocketContext);
 
-export const SocketProvider = ({ children }) => {
-  const socket = io();
-
+export const SocketProvider = ({ children, socket }) => {
   socket.on('newChannel', (payload) => store.dispatch(addChannel(payload)));
   socket.on('removeChannel', (payload) => store.dispatch(removeChannel(payload.id)));
   socket.on('renameChannel', (payload) => store.dispatch(updateChannel(payload)));
