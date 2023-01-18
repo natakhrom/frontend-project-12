@@ -8,11 +8,13 @@ import { useTranslation } from 'react-i18next';
 import routes from '../../routes/routes';
 import { useAuth } from '../common/AuthProvider';
 import img from '../../images/hexlet.jpeg';
+import goTo from '../../routes/goTo';
 
 const LoginPage = () => {
   const [authFailed, setAuthFailed] = useState(false);
   const userRef = useRef();
   const passwordRef = useRef();
+  const buttonRef = useRef();
   const navigate = useNavigate();
   const auth = useAuth();
   const { logIn } = auth;
@@ -26,9 +28,12 @@ const LoginPage = () => {
     setAuthFailed(false);
 
     try {
+      userRef.current.readOnly = true;
+      passwordRef.current.readOnly = true;
+      buttonRef.current.disabled = true;
       const res = await axios.post(routes.loginPath(), values);
       logIn(res.data);
-      navigate('/');
+      navigate(goTo.home);
     } catch (err) {
       if (err.isAxiosError && err.response.status === 401) {
         setAuthFailed(true);
@@ -122,7 +127,7 @@ const LoginPage = () => {
                         ? <div className="invalid-tooltip">{t('errors.faildNameOrPassword')}</div>
                         : null}
                     </Form.Group>
-                    <Button variant="outline-primary" type="submit" className="w-100">
+                    <Button variant="outline-primary" type="submit" className="w-100" ref={buttonRef}>
                       {t('buttons.login')}
                     </Button>
                   </Form>
@@ -135,7 +140,7 @@ const LoginPage = () => {
                   {t('questions.account')}
                   {' '}
                 </span>
-                <a href="/signup">{t('links.registration')}</a>
+                <a href={goTo.signup}>{t('links.registration')}</a>
               </div>
             </div>
           </div>

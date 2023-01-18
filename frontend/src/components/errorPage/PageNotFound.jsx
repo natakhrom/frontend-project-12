@@ -1,6 +1,8 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 
+import goTo from '../../routes/goTo';
+
 const PageNotFound = () => {
   const { t } = useTranslation();
 
@@ -17,7 +19,7 @@ const PageNotFound = () => {
       <p className="text-muted">
         {t('links.text')}
         {' '}
-        <a href="/">
+        <a href={goTo.home}>
           {t('links.homePage')}
         </a>
       </p>

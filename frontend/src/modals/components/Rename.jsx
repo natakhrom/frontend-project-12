@@ -6,7 +6,7 @@ import { Formik } from 'formik';
 import * as yup from 'yup';
 import { useSelector } from 'react-redux';
 
-import { useSocket } from '../../socket/socket';
+import { useApi } from '../../api/api';
 import { selectChangeableChannel } from '../../slices/components/channelsSlice';
 
 const Rename = ({ onHide }) => {
@@ -15,7 +15,7 @@ const Rename = ({ onHide }) => {
   const inputRef = useRef();
   const refSubmit = useRef();
   const refCancel = useRef();
-  const { rename } = useSocket();
+  const { rename } = useApi();
   const changeableChannel = useSelector(selectChangeableChannel);
 
   useEffect(() => {
@@ -32,9 +32,9 @@ const Rename = ({ onHide }) => {
 
   const onSubmit = (values, reject) => {
     try {
+      refSubmit.current.disabled = true;
+      refCancel.current.disabled = true;
       rename(changeableChannel.id, values.channelName);
-      refSubmit.current.setAttribute('disabled', true);
-      refCancel.current.setAttribute('disabled', true);
       onHide();
       notify();
     } catch (err) {

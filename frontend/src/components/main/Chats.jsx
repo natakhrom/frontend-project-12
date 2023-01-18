@@ -26,10 +26,8 @@ const Chats = () => {
   }, [dispatch, token]);
 
   useEffect(() => {
-    if (error) {
-      if (error.code === 'ERR_BAD_REQUEST') {
-        logOut();
-      }
+    if (error && error.code === 'ERR_BAD_REQUEST') {
+      logOut();
     }
   }, [error, logOut]);
 

@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
 import { useSelector } from 'react-redux';
 
-import { useSocket } from '../../socket/socket';
+import { useApi } from '../../api/api';
 import { selectChangeableChannel } from '../../slices/components/channelsSlice';
 
 const Remove = ({ onHide }) => {
@@ -12,14 +12,14 @@ const Remove = ({ onHide }) => {
   const notify = () => toast.success(t('notify.removing'));
   const refSubmit = useRef();
   const refCancel = useRef();
-  const { remove } = useSocket();
+  const { remove } = useApi();
   const changeableChannel = useSelector(selectChangeableChannel);
 
   const removedClick = (reject) => {
     try {
+      refSubmit.current.disabled = true;
+      refCancel.current.disabled = true;
       remove(changeableChannel);
-      refSubmit.current.setAttribute('disabled', true);
-      refCancel.current.setAttribute('disabled', true);
       onHide();
       notify();
     } catch (err) {

@@ -37,11 +37,6 @@ const channelsSlice = createSlice({
   initialState,
   reducers: {
     addChannel: (state, { payload }) => {
-      const isActiveWindow = !document.hidden;
-      const { username } = JSON.parse(localStorage.getItem('userId'));
-      if (isActiveWindow && username === payload.username) {
-        state.currentChannelId = payload.id;
-      }
       channelsAdapter.addOne(state, payload);
     },
     removeChannel: (state, { payload }) => {

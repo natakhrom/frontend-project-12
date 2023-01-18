@@ -4,15 +4,14 @@ import { useTranslation } from 'react-i18next';
 import filter from 'leo-profanity';
 import { useSelector } from 'react-redux';
 
-import { useSocket } from '../../../../../socket/socket';
+import { useApi } from '../../../../../api/api';
 import { useAuth } from '../../../../common/AuthProvider';
 import { selectCurrentChannel } from '../../../../../slices/components/channelsSlice';
 
 const ChatMessageForm = () => {
   const input = React.createRef();
   const currentChannel = useSelector(selectCurrentChannel);
-  const socket = useSocket();
-  const { setMessage } = socket;
+  const { setMessage } = useApi();
 
   const auth = useAuth();
   const { user } = auth.loggedIn;

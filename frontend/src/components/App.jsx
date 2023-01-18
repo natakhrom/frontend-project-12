@@ -9,13 +9,14 @@ import { Provider, ErrorBoundary } from '@rollbar/react';
 import { io } from 'socket.io-client';
 
 import { AuthProvider } from './common/AuthProvider';
-import { SocketProvider } from '../socket/socket';
+import { ApiProvider } from '../api/api';
 import Redirect from '../routes/Redirect';
 import Chats from './main/Chats';
 import PageNotFound from './errorPage/PageNotFound';
 import LoginPage from './login/LoginPage';
 import Header from './common/Header';
 import SignupPage from './signup/SignupPage';
+import goTo from '../routes/goTo';
 
 const rollbarConfig = {
   accessToken: process.env.REACT_APP_SECRET_KEY_ROLLBAR,
@@ -24,7 +25,7 @@ const rollbarConfig = {
 
 const router = createBrowserRouter([
   {
-    path: '/',
+    path: goTo.home,
     element: (
       <Redirect>
         <Chats />
@@ -32,15 +33,15 @@ const router = createBrowserRouter([
       </Redirect>),
   },
   {
-    path: '/login',
+    path: goTo.login,
     element: <Redirect><LoginPage /></Redirect>,
   },
   {
-    path: '/signup',
+    path: goTo.signup,
     element: <Redirect><SignupPage /></Redirect>,
   },
   {
-    path: '*',
+    path: goTo.other,
     element: <PageNotFound />,
   },
 ]);
@@ -51,12 +52,12 @@ const App = () => (
   <Provider config={rollbarConfig}>
     <ErrorBoundary>
       <AuthProvider>
-        <SocketProvider socket={socket}>
+        <ApiProvider socket={socket}>
           <div className="d-flex flex-column h-100">
             <Header />
             <RouterProvider router={router} />
           </div>
-        </SocketProvider>
+        </ApiProvider>
       </AuthProvider>
     </ErrorBoundary>
   </Provider>

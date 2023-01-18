@@ -5,7 +5,7 @@ import { toast } from 'react-toastify';
 import * as yup from 'yup';
 import { Modal, Form, Button } from 'react-bootstrap';
 
-import { useSocket } from '../../socket/socket';
+import { useApi } from '../../api/api';
 import { useAuth } from '../../components/common/AuthProvider';
 
 const Add = ({ onHide }) => {
@@ -14,7 +14,7 @@ const Add = ({ onHide }) => {
   const inputRef = useRef();
   const refSubmit = useRef();
   const refCancel = useRef();
-  const { add } = useSocket();
+  const { add } = useApi();
   const auth = useAuth();
   const { user } = auth.loggedIn;
   const { username } = user;
@@ -34,9 +34,10 @@ const Add = ({ onHide }) => {
 
   const onSubmit = (values, reject) => {
     try {
+      inputRef.current.readOnly = true;
+      refSubmit.current.disabled = true;
+      refCancel.current.disabled = true;
       add(values.channelName, username);
-      refSubmit.current.setAttribute('disabled', true);
-      refCancel.current.setAttribute('disabled', true);
       onHide();
       notify();
     } catch (err) {

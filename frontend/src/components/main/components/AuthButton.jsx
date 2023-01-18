@@ -2,6 +2,7 @@ import { Button } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 
 import { useAuth } from '../../common/AuthProvider';
+import goTo from '../../../routes/goTo';
 
 const AuthButton = () => {
   const auth = useAuth();
@@ -10,7 +11,7 @@ const AuthButton = () => {
 
   return (
     user
-      ? <a href="/login"><Button onClick={auth.logOut}>{t('buttons.logOut')}</Button></a>
+      ? <a href={goTo.login}><Button onClick={auth.logOut}>{t('buttons.logOut')}</Button></a>
       : null
   );
 };

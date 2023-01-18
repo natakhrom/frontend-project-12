@@ -6,14 +6,19 @@ import {
 } from 'react';
 
 import store from '../slices/index';
-import { addChannel, removeChannel, updateChannel } from '../slices/components/channelsSlice';
+import {
+  addChannel,
+  removeChannel,
+  updateChannel,
+  changeCurrentChannel,
+} from '../slices/components/channelsSlice';
 import { addMessage } from '../slices/components/messagesSlice';
 
-const SocketContext = createContext({});
+const ApiContext = createContext({});
 
-export const useSocket = () => useContext(SocketContext);
+export const useApi = () => useContext(ApiContext);
 
-export const SocketProvider = ({ children, socket }) => {
+export const ApiProvider = ({ children, socket }) => {
   socket.on('newChannel', (payload) => store.dispatch(addChannel(payload)));
   socket.on('removeChannel', (payload) => store.dispatch(removeChannel(payload.id)));
   socket.on('renameChannel', (payload) => store.dispatch(updateChannel(payload)));
@@ -25,6 +30,7 @@ export const SocketProvider = ({ children, socket }) => {
       name: nameChannel,
       username,
     },
+    () => socket.on('newChannel', (payload) => store.dispatch(changeCurrentChannel(payload.id))),
   ), [socket]);
 
   const remove = useCallback((channel) => socket.emit(
@@ -54,8 +60,8 @@ export const SocketProvider = ({ children, socket }) => {
   }), [add, remove, rename, setMessage]);
 
   return (
-    <SocketContext.Provider value={context}>
+    <ApiContext.Provider value={context}>
       {children}
-    </SocketContext.Provider>
+    </ApiContext.Provider>
   );
 };
