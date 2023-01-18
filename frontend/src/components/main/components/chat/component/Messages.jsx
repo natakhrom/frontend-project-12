@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import { useRef, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 
@@ -17,7 +18,8 @@ const Messages = () => {
   const isInitialScroll = useRef(true);
 
   useEffect(() => {
-    if (isInitialScroll || (lastMessage && lastMessage.username === user.username)) {
+    if (isInitialScroll.current
+      || (lastMessage && lastMessage.username === user.username)) {
       isInitialScroll.current = false;
 
       messagesRef.current.scrollTo({
