@@ -74,19 +74,15 @@ const channelsSlice = createSlice({
   },
 });
 
-const selectChannels = (state) => state.channels.ids;
-const selectCurrentChannelId = (state) => state.channels.currentChannelId;
+export const selectCurrentChannelId = (state) => state.channels.currentChannelId;
 export const selectLoadingStatus = (state) => state.channels.loadingStatus;
 export const selectChangeableChannel = (state) => state.channels.changeableChannel;
 export const selectError = (state) => state.channels.error;
 
 export const selectCurrentChannel = createSelector(
-  selectChannels,
   selectCurrentChannelId,
   (state) => state.channels.entities,
-  (ids, currentChannelId, entities) => ids
-    .filter((id) => id === currentChannelId)
-    .map((i) => entities[i])[0],
+  (currentChannelId, entities) => entities[currentChannelId],
 );
 
 export const {

@@ -8,12 +8,11 @@ import {
   lastCurrentMessage,
 } from '../../../../../slices/components/messagesSlice';
 import { useAuth } from '../../../../common/AuthProvider';
-import { selectCurrentChannel } from '../../../../../slices/components/channelsSlice';
+import { selectCurrentChannelId } from '../../../../../slices/components/channelsSlice';
 
 const Messages = () => {
   const messages = useSelector(selectCurrentMessages);
-  const currentChannel = useSelector(selectCurrentChannel);
-  const { id } = currentChannel;
+  const id = useSelector(selectCurrentChannelId);
   const messagesRef = useRef();
   const [lastMessage] = useSelector(lastCurrentMessage);
   const auth = useAuth();

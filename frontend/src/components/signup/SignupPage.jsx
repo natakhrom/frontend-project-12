@@ -54,6 +54,10 @@ const SignupPage = () => {
       navigation(goTo.home);
     } catch (err) {
       setAuthFailed(true);
+      usernameRef.current.readOnly = false;
+      passwordRef.current.readOnly = false;
+      confirmPasswordRef.current.readOnly = false;
+      buttonRef.current.disabled = false;
 
       if (err.isAxiosError && err.response.data.statusCode === 409) {
         usernameRef.current.select();

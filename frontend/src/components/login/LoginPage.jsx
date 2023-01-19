@@ -35,6 +35,10 @@ const LoginPage = () => {
       logIn(res.data);
       navigate(goTo.home);
     } catch (err) {
+      userRef.current.readOnly = false;
+      passwordRef.current.readOnly = false;
+      buttonRef.current.disabled = false;
+
       if (err.isAxiosError && err.response.status === 401) {
         setAuthFailed(true);
         userRef.current.select();
