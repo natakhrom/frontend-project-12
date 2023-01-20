@@ -14,7 +14,6 @@ const LoginPage = () => {
   const [authFailed, setAuthFailed] = useState(false);
   const userRef = useRef();
   const passwordRef = useRef();
-  const buttonRef = useRef();
   const navigate = useNavigate();
   const auth = useAuth();
   const { logIn } = auth;
@@ -24,23 +23,19 @@ const LoginPage = () => {
     userRef.current.focus();
   }, []);
 
-  const onSubmit = async (values, reject) => {
+  const onSubmit = async (values, { setSubmitting }, reject) => {
     setAuthFailed(false);
 
     try {
-      userRef.current.readOnly = true;
-      passwordRef.current.readOnly = true;
-      buttonRef.current.disabled = true;
+      setSubmitting(true);
       const res = await axios.post(routes.loginPath(), values);
       logIn(res.data);
       navigate(goTo.home);
     } catch (err) {
-      userRef.current.readOnly = false;
-      passwordRef.current.readOnly = false;
-      buttonRef.current.disabled = false;
+      setSubmitting(false);
+      setAuthFailed(true);
 
       if (err.isAxiosError && err.response.status === 401) {
-        setAuthFailed(true);
         userRef.current.select();
 
         return;
@@ -77,6 +72,7 @@ const LoginPage = () => {
                   handleChange,
                   handleBlur,
                   values,
+                  isSubmitting,
                 }) => (
                   <Form
                     className="col-12 col-md-6 mt-3 mt-mb-0"
@@ -102,6 +98,7 @@ const LoginPage = () => {
                         ref={userRef}
                         isInvalid={authFailed}
                         required
+                        disabled={isSubmitting}
                       />
                       <Form.Label>{t('fields.nickname')}</Form.Label>
                     </Form.Group>
@@ -125,13 +122,14 @@ const LoginPage = () => {
                         ref={passwordRef}
                         isInvalid={authFailed}
                         required
+                        disabled={isSubmitting}
                       />
                       <Form.Label>{t('fields.password')}</Form.Label>
                       {authFailed
                         ? <div className="invalid-tooltip">{t('errors.faildNameOrPassword')}</div>
                         : null}
                     </Form.Group>
-                    <Button variant="outline-primary" type="submit" className="w-100" ref={buttonRef}>
+                    <Button variant="outline-primary" type="submit" className="w-100" disabled={isSubmitting}>
                       {t('buttons.login')}
                     </Button>
                   </Form>

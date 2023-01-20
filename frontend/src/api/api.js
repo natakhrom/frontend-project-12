@@ -19,6 +19,7 @@ const ApiContext = createContext({});
 export const useApi = () => useContext(ApiContext);
 
 export const ApiProvider = ({ children, socket }) => {
+  socket.on('newChannel', (payload) => store.dispatch(addChannel(payload)));
   socket.on('removeChannel', (payload) => store.dispatch(removeChannel(payload.id)));
   socket.on('renameChannel', (payload) => store.dispatch(updateChannel(payload)));
   socket.on('newMessage', (payload) => store.dispatch(addMessage(payload)));

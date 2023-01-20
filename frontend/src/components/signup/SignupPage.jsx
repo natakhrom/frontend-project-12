@@ -14,9 +14,6 @@ import goTo from '../../routes/goTo';
 const SignupPage = () => {
   const [authFailed, setAuthFailed] = useState(false);
   const usernameRef = useRef();
-  const passwordRef = useRef();
-  const confirmPasswordRef = useRef();
-  const buttonRef = useRef();
   const navigation = useNavigate();
   const auth = useAuth();
   const { t } = useTranslation();
@@ -41,23 +38,17 @@ const SignupPage = () => {
       .oneOf([yup.ref('password'), null], 'errors.confirmPassword'),
   });
 
-  const onSubmit = async (values, reject) => {
+  const onSubmit = async (values, { setSubmitting }, reject) => {
     setAuthFailed(false);
 
     try {
-      usernameRef.current.readOnly = true;
-      passwordRef.current.readOnly = true;
-      confirmPasswordRef.current.readOnly = true;
-      buttonRef.current.disabled = true;
+      setSubmitting(true);
       const res = await axios.post(routes.signupPath(), values);
       auth.logIn(res.data);
       navigation(goTo.home);
     } catch (err) {
+      setSubmitting(false);
       setAuthFailed(true);
-      usernameRef.current.readOnly = false;
-      passwordRef.current.readOnly = false;
-      confirmPasswordRef.current.readOnly = false;
-      buttonRef.current.disabled = false;
 
       if (err.isAxiosError && err.response.data.statusCode === 409) {
         usernameRef.current.select();
@@ -93,6 +84,7 @@ const SignupPage = () => {
                   values,
                   touched,
                   errors,
+                  isSubmitting,
                 }) => (
                   <Form
                     className="w-50"
@@ -119,9 +111,10 @@ const SignupPage = () => {
                           }
                         }}
                         onBlur={handleBlur}
-                        ref={usernameRef}
                         isValid={touched.username && !errors.username}
                         isInvalid={(touched.username && !!errors.username) || authFailed === true}
+                        ref={usernameRef}
+                        disabled={isSubmitting}
                       />
                       <Form.Label>{t('fields.username')}</Form.Label>
                       <Form.Control.Feedback
@@ -146,7 +139,7 @@ const SignupPage = () => {
                         onBlur={handleBlur}
                         isValid={touched.password && !errors.password}
                         isInvalid={(touched.password && !!errors.password) || authFailed === true}
-                        ref={passwordRef}
+                        disabled={isSubmitting}
                       />
                       <Form.Label>{t('fields.password')}</Form.Label>
                       <Form.Control.Feedback
@@ -176,7 +169,7 @@ const SignupPage = () => {
                           (touched.confirmPassword && !!errors.confirmPassword)
                           || authFailed === true
                         }
-                        ref={confirmPasswordRef}
+                        disabled={isSubmitting}
                       />
                       {authFailed
                         ? (
@@ -194,7 +187,7 @@ const SignupPage = () => {
                       </Form.Control.Feedback>
                     </Form.Group>
 
-                    <Button variant="outline-primary" type="submit" className="w-100" ref={buttonRef}>
+                    <Button variant="outline-primary" type="submit" className="w-100" disabled={isSubmitting}>
                       {t('buttons.signup')}
                     </Button>
                   </Form>
